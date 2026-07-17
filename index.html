@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aether Auth | Premium Supabase Portal</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <!-- Ambient Background Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Main Container -->
+  <main class="app-container">
+    <!-- Header/Logo Area -->
+    <header class="app-header">
+      <div class="logo-wrapper">
+        <div class="logo-icon">
+          <i data-lucide="shield-check"></i>
+        </div>
+        <span class="logo-text">AETHER<span>AUTH</span></span>
+      </div>
+      <p class="subtitle">Secure authentication powered by Supabase</p>
+    </header>
+
+    <!-- VIEWS SECTION -->
+    <div class="views-wrapper">
+      
+      <!-- 1. LOGIN VIEW -->
+      <section id="view-login" class="auth-card active">
+        <h2 class="card-title">Welcome Back</h2>
+        <p class="card-subtitle">Sign in to your secure control panel</p>
+
+        <div class="auth-toggle">
+          <button type="button" class="toggle-btn active" data-method="email">Email</button>
+          <button type="button" class="toggle-btn" data-method="phone">Phone</button>
+        </div>
+
+        <form id="form-login" class="auth-form" novalidate>
+          <div class="form-group" id="login-email-group">
+            <label for="login-email">Email Address</label>
+            <div class="input-wrapper">
+              <i data-lucide="mail" class="input-icon"></i>
+              <input type="email" id="login-email" placeholder="name@example.com">
+            </div>
+            <span class="error-msg" id="error-login-email"></span>
+          </div>
+
+          <div class="form-group" id="login-password-group">
+            <div class="label-row">
+              <label for="login-password">Password</label>
+              <a href="#" class="text-link" id="link-goto-reset">Forgot password?</a>
+            </div>
+            <div class="input-wrapper">
+              <i data-lucide="lock" class="input-icon"></i>
+              <input type="password" id="login-password" placeholder="••••••••">
+              <button type="button" class="btn-toggle-password" tabindex="-1">
+                <i data-lucide="eye" class="eye-icon"></i>
+              </button>
+            </div>
+            <span class="error-msg" id="error-login-password"></span>
+          </div>
+
+          <div class="form-group" id="login-phone-group" style="display:none;">
+            <label for="login-phone">Phone Number</label>
+            <div class="input-wrapper">
+              <i data-lucide="phone" class="input-icon"></i>
+              <input type="tel" id="login-phone" placeholder="+919876543210">
+            </div>
+            <span class="error-msg" id="error-login-phone"></span>
+          </div>
+
+          <div class="form-group" id="login-otp-group" style="display:none;">
+            <label for="login-otp">6-Digit Code</label>
+            <div class="input-wrapper">
+              <i data-lucide="key-round" class="input-icon"></i>
+              <input type="text" id="login-otp" maxlength="6" placeholder="123456" inputmode="numeric">
+            </div>
+            <span class="error-msg" id="error-login-otp"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="btn-login">
+            <span>Sign In</span>
+            <i data-lucide="arrow-right" class="btn-icon"></i>
+          </button>
+        </form>
+
+        <div class="card-footer">
+          Don't have an account? <a href="#" class="text-link" id="link-goto-signup">Sign up</a>
+        </div>
+      </section>
+
+      <!-- 2. SIGNUP VIEW -->
+      <section id="view-signup" class="auth-card">
+        <h2 class="card-title">Create Account</h2>
+        <p class="card-subtitle">Get started with a free secure profile</p>
+
+        <form id="form-signup" class="auth-form" novalidate>
+          <div class="form-group">
+            <label for="signup-email">Email Address</label>
+            <div class="input-wrapper">
+              <i data-lucide="mail" class="input-icon"></i>
+              <input type="email" id="signup-email" placeholder="name@example.com" required>
+            </div>
+            <span class="error-msg" id="error-signup-email"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <div class="input-wrapper">
+              <i data-lucide="lock" class="input-icon"></i>
+              <input type="password" id="signup-password" placeholder="Minimum 6 characters" required>
+              <button type="button" class="btn-toggle-password" tabindex="-1">
+                <i data-lucide="eye" class="eye-icon"></i>
+              </button>
+            </div>
+            <span class="error-msg" id="error-signup-password"></span>
+            
+            <!-- Password Strength Meter -->
+            <div class="strength-meter-container">
+              <div class="strength-bar"><div class="strength-bar-fill" id="strength-fill"></div></div>
+              <span class="strength-text" id="strength-text">Password strength</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="btn-signup">
+            <span>Create Account</span>
+            <i data-lucide="user-plus" class="btn-icon"></i>
+          </button>
+        </form>
+
+        <div class="card-footer">
+          Already have an account? <a href="#" class="text-link" id="link-goto-login">Sign in</a>
+        </div>
+      </section>
+
+      <!-- 3. RESET PASSWORD VIEW -->
+      <section id="view-reset" class="auth-card">
+        <div class="back-nav">
+          <a href="#" class="back-link" id="link-reset-back">
+            <i data-lucide="chevron-left"></i>
+            <span>Back to Login</span>
+          </a>
+        </div>
+        <h2 class="card-title">Reset Password</h2>
+        <p class="card-subtitle">Enter your email and we'll send you a recovery link</p>
+
+        <form id="form-reset" class="auth-form" novalidate>
+          <div class="form-group">
+            <label for="reset-email">Email Address</label>
+            <div class="input-wrapper">
+              <i data-lucide="mail" class="input-icon"></i>
+              <input type="email" id="reset-email" placeholder="name@example.com" required>
+            </div>
+            <span class="error-msg" id="error-reset-email"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="btn-send-reset">
+            <span>Send Reset Link</span>
+            <i data-lucide="send" class="btn-icon"></i>
+          </button>
+        </form>
+      </section>
+
+      <!-- 4. UPDATE PASSWORD VIEW (Recovery Mode) -->
+      <section id="view-update-password" class="auth-card">
+        <h2 class="card-title">Update Password</h2>
+        <p class="card-subtitle">Set a secure new password for your account</p>
+
+        <form id="form-update-password" class="auth-form" novalidate>
+          <div class="form-group">
+            <label for="update-password">New Password</label>
+            <div class="input-wrapper">
+              <i data-lucide="lock" class="input-icon"></i>
+              <input type="password" id="update-password" placeholder="Minimum 6 characters" required>
+              <button type="button" class="btn-toggle-password" tabindex="-1">
+                <i data-lucide="eye" class="eye-icon"></i>
+              </button>
+            </div>
+            <span class="error-msg" id="error-update-password"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="btn-update-password">
+            <span>Save New Password</span>
+            <i data-lucide="save" class="btn-icon"></i>
+          </button>
+        </form>
+      </section>
+
+      <!-- 5. DASHBOARD VIEW (Protected) -->
+      <section id="view-dashboard" class="auth-card dashboard-card">
+        <div class="dashboard-badge">
+          <i data-lucide="shield" class="badge-icon"></i>
+          <span>Secure Session</span>
+        </div>
+        <h2 class="card-title">Access Granted</h2>
+        <p class="card-subtitle">Successfully authenticated user dashboard</p>
+
+        <div class="user-profile">
+          <div class="profile-avatar">
+            <span id="user-avatar-initial">U</span>
+          </div>
+          <div class="profile-details">
+            <span class="detail-label">Logged in as</span>
+            <span class="detail-value" id="user-email-display">user@example.com</span>
+          </div>
+        </div>
+
+        <div class="session-info">
+          <div class="info-row">
+            <span class="info-label">User ID:</span>
+            <span class="info-val" id="user-id-display">uid-placeholder</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Last Sign In:</span>
+            <span class="info-val" id="user-last-login">time-placeholder</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Provider:</span>
+            <span class="info-val tag">Email</span>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary" id="btn-logout">
+          <i data-lucide="log-out" class="btn-icon"></i>
+          <span>Sign Out</span>
+        </button>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Application JS Code -->
+  <script src="app.js"></script>
+</body>
+</html>
