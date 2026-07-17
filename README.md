@@ -15,4 +15,4 @@ A secure authentication web app built with Supabase — supports email/password 
 - Responsive glassmorphic UI
 
 ## Live Demo
-[Add your Render/Netlify link here once deployed]
+https://supabase-auth-app.onrender.com
